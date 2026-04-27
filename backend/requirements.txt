@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+langchain
+langchain-community
+langchain-qdrant
+qdrant-client
+fastembed
+langchain-gigachat
+python-dotenv
