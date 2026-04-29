@@ -1,0 +1,264 @@
+/* Сброс и базовые стили */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+}
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.topbar-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.user-info {
+  margin-right: 1rem;
+}
+.btn {
+  padding: 0.4rem 0.8rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.btn:hover {
+  background: #0056b3;
+}
+.btn-danger {
+  background: #dc3545;
+}
+.btn-danger:hover {
+  background: #b02a37;
+}
+.main-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Аутентификация */
+.auth-page {
+  max-width: 400px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.auth-page h2 {
+  margin-bottom: 1rem;
+}
+.auth-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.auth-page input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.error {
+  color: red;
+}
+
+/* Разметка чата */
+.chat-layout {
+  display: flex;
+  height: 100%;
+}
+.chat-layout.guest {
+  justify-content: center;
+}
+.sidebar {
+  width: 250px;
+  background: #2c3e50;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow-y: auto;
+}
+.new-chat-btn {
+  margin-bottom: 1rem;
+  background: #27ae60;
+}
+.new-chat-btn:hover {
+  background: #219a52;
+}
+.chat-list {
+  list-style: none;
+  flex: 1;
+}
+.chat-item {
+  padding: 0.5rem;
+  margin-bottom: 0.3rem;
+  background: #34495e;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.chat-item.active {
+  background: #007bff;
+}
+.chat-title {
+  font-weight: bold;
+}
+.chat-date {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+/* Область сообщений */
+.chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.messages-container {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background: #fff;
+}
+.input-area {
+  display: flex;
+  padding: 0.5rem;
+  background: #f0f2f5;
+  border-top: 1px solid #ddd;
+}
+.message-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+}
+.send-btn {
+  background: #007bff;
+}
+
+/* Сообщения */
+.message {
+  margin-bottom: 0.8rem;
+}
+.message-role {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+.message.user .message-role {
+  color: #007bff;
+}
+.message.assistant .message-role {
+  color: #27ae60;
+}
+.message.system .message-role {
+  color: #e74c3c;
+}
+.message-content {
+  background: #f8f9fa;
+  padding: 0.5rem;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+/* Файлы */
+.files-page {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.upload-section {
+  margin-bottom: 1rem;
+}
+.files-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.files-table th, .files-table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+.files-table th {
+  background: #f8f9fa;
+}
+
+/* 404 */
+.not-found {
+  text-align: center;
+  padding: 4rem;
+}
+
+/* Общий шрифт — увеличен */
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+  font-size: 18px;                     /* увеличено */
+}
+
+/* Поле ввода сообщения */
+.message-input {
+  flex: 1;
+  padding: 0.75rem;                    /* больше внутреннего пространства */
+  font-size: 1.1rem;                   /* крупный текст */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+}
+
+/* Сообщения */
+.message-content {
+  background: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 4px;
+  line-height: 1.5;
+  font-size: 1rem;                     /* базовый размер сообщения */
+}
+
+/* Кнопка "Назад" на странице файлов */
+.back-btn {
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+/* Левая часть верхней панели */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
