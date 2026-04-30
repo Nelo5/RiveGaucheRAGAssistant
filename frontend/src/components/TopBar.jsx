@@ -12,7 +12,7 @@ export default function TopBar() {
 
   return (
     <header className="topbar">
-      <Link to="/" className="logo">RAG Chat</Link>
+      <Link to="/" className="logo">Магнит-помощник</Link>
       <div className="topbar-actions">
         {isAuthenticated ? (
           <>

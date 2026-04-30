@@ -6,7 +6,7 @@ from app.core.config import settings
 
 class QdrantService:
     def __init__(self):
-        self.client = QdrantClient(url=settings.QDRANT_URL)
+        self.client = QdrantClient(url=settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY)
         self.embeddings = FastEmbedEmbeddings()
         self.sparse = FastEmbedSparse(model_name='Qdrant/BM25')
         self.store = None

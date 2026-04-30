@@ -2,9 +2,10 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     APP_NAME: str = 'RAG System'
-    QDRANT_URL: str = 'http://qdrant:6333'
-    COLLECTION_NAME: str = 'research-app'
-    GIGACHAT_CREDENTIALS: str = 'ZmZlODJkYzAtMTAxMy00YzUzLWI4OWUtMWYzYWFiYjlhYTYzOmViOTY2OTdlLWJlNmItNDc3Yy04YWYzLTRlNTBlMzEzZjNkZg=='
+    QDRANT_URL: str = 'http://qdrant:634'
+    QDRANT_API_KEY: str = 'your_qdrant_api_key'
+    COLLECTION_NAME: str = 'magnit_assistant'
+    GIGACHAT_CREDENTIALS: str = ''
     DATABASE_URL:str = "postgresql://postgres:postgres@db:5432/ragdb"
     SECRET_KEY:str  = "supersecretkey"
     ALGORITHM:str = "HS256"    

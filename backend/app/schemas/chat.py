@@ -38,8 +38,3 @@ class MessageResponse(BaseModel):
 
     class Config:
         from_attributes = True
-
-
-class SendMessageResponse(BaseModel):
-    """Схема ответа при отправке сообщения (получен ответ ассистента)."""
-    answer: str = Field(..., description="Ответ от RAG-сервиса")

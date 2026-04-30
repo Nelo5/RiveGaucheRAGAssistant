@@ -8,19 +8,14 @@ services:
       - "6334:6334"   # gRPC (опционально)
     volumes:
       - ./qdrant_storage:/qdrant/storage
-    environment:
-      - QDRANT__SERVICE__GRPC_PORT=6334
-      - QDRANT__SERVICE__HTTP_PORT=6333
+    env_file: .env
     networks:
       - app-network
   
   db:
     image: postgres:16
     restart: always
-    environment:
-      POSTGRES_DB: ragdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+    env_file: .env
     ports:
       - "5432:5432"
     healthcheck:
@@ -37,13 +32,13 @@ services:
     restart: unless-stopped
     ports:
       - "8080:8080"
-    environment:
-      ADMINER_DEFAULT_SERVER: db
+    env_file: .env
     networks:
       - app-network
 
   backend:
-    build: ./backend
+    image: nelo05/rksp_kursach-backend:latest
+    env_file: .env
     container_name: fastapi_app_backend
     ports:
       - "8000:8000"
@@ -57,10 +52,9 @@ services:
       build: ./frontend
       ports:
         - "3000:80"
-      environment:
-        - VITE_API_BASE_URL=http://backend:8000  # замените на адрес вашего backend
-      depends_on:
-        - backend
+      env_file: .env
+      # depends_on:
+      #   - backend
       networks:
       - app-network
 
