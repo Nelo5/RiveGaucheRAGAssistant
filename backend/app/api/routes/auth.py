@@ -7,17 +7,18 @@ from app.services import auth_service
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
-@router.post("/register", response_model=RegisterResponse)
+@router.post("/register", response_model=RegisterResponse,
+             responses={409: {"description": "Email already exists"}, 400: {"description": "Malformed JSON body"}})
 def register(
     data: RegisterRequest,
     db: Session = Depends(get_db)
 ):
     user = auth_service.register(db, data.email, data.password)
     if not user:
-        raise HTTPException(400, "Email already exists")
+        raise HTTPException(409, "Email already exists")
     return RegisterResponse(id=str(user.id), email=user.email)
 
-@router.post("/login", response_model=TokenResponse)
+@router.post("/login", response_model=TokenResponse, responses={400: {"description": "Malformed JSON"}, 401: {"description": "Invalid credentials"}, 422: {"description": "Validation error"}})
 def login(
     data: LoginRequest,
     db: Session = Depends(get_db)
@@ -27,7 +28,7 @@ def login(
         raise HTTPException(401, "Invalid credentials")
     return TokenResponse(access_token=token, token_type="bearer")
 
-@router.get("/me", response_model=UserResponse)
+@router.get("/me", response_model=UserResponse, responses={401: {"description": "Not authenticated"}})
 def me(current_user=Depends(get_current_user)):
     return UserResponse(
         id=str(current_user.id),

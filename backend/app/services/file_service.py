@@ -2,7 +2,6 @@ import uuid
 from datetime import datetime
 from pathlib import Path
 import tempfile
-from app.core.config import settings
 
 from fastapi import UploadFile, HTTPException
 from qdrant_client import models
@@ -11,6 +10,7 @@ from app.services.qdrant_service import qdrant_service
 from langchain_community.document_loaders.pdf import PDFPlumberLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from app.core.config import settings
+from uuid import UUID
 
 
 
@@ -29,6 +29,12 @@ class FileService:
 
         if not file.filename.lower().endswith(".pdf"):
             raise HTTPException(400, "Поддерживаются только PDF")
+
+        contents = await file.read()
+        if not contents:
+            raise HTTPException(422, "File is empty")
+        await file.seek(0)   # сбросить позицию для повторного чтения
+
 
         file_id = str(uuid.uuid4())
 
@@ -90,7 +96,7 @@ class FileService:
 
         return list(files.values())
 
-    def get_file(self, file_id: str):
+    def get_file(self, file_id: UUID):
 
         points, _ = qdrant_service.client.scroll(
             collection_name=settings.COLLECTION_NAME,
@@ -118,7 +124,7 @@ class FileService:
             "chunks": len(points)
         }
     
-    def delete_file(self, file_id: str):
+    def delete_file(self, file_id: UUID):
 
         self.get_file(file_id)
 

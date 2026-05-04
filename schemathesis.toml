@@ -1,4 +1,6 @@
 # schemathesis.toml
+generation.max-examples = 100
+
 
 [[project]]
 title = "Payment API"
@@ -17,7 +19,3 @@ include-method = "POST"
 generation.max-examples = 10
 
 # schemathesis.toml
-[auth.dynamic.openapi.BearerAuth]
-path = "/auth/login"
-payload = { username = "ashot@mail.ru", password = "fijnbr228" }
-extract_selector = "/access_token"

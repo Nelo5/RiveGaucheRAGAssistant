@@ -62,7 +62,7 @@ export const api = {
   uploadFile: (file) => {
     const formData = new FormData();
     formData.append('file', file);
-    return request('/files/upload', {
+    return request('/files', {
       method: 'POST',
       body: formData,
     });
