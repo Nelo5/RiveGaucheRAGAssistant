@@ -14,8 +14,6 @@ class MessageCreate(BaseModel):
     )
 
 
-# --- Response Schemas ---
-
 class ChatResponse(BaseModel):
     """Схема ответа с информацией о чате."""
     id: UUID
@@ -25,14 +23,14 @@ class ChatResponse(BaseModel):
     updated_at: datetime
 
     class Config:
-        from_attributes = True  # для работы с SQLAlchemy моделями
+        from_attributes = True 
 
 
 class MessageResponse(BaseModel):
     """Схема ответа с информацией о сообщении."""
     id: UUID
     chat_id: UUID
-    role: str  # "user" или "assistant"
+    role: str  
     content: str
     created_at: datetime
 

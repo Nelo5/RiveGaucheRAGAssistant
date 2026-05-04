@@ -13,7 +13,6 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title='RAG System', lifespan=lifespan)
 
-# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

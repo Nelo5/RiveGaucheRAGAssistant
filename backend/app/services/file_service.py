@@ -16,6 +16,15 @@ from app.core.config import settings
 
 
 class FileService:
+
+    def load_and_split(self, path: str):
+        docs = PDFPlumberLoader(path).load()
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=settings.CHUNK_SIZE,
+            chunk_overlap=settings.CHUNK_OVERLAP,
+        )
+        return splitter.split_documents(docs)
+
     async def upload_file(self, file: UploadFile):
 
         if not file.filename.lower().endswith(".pdf"):
@@ -47,14 +56,6 @@ class FileService:
         finally:
             if temp_path.exists():
                 temp_path.unlink()
-
-    def load_and_split(self, path: str):
-        docs = PDFPlumberLoader(path).load()
-        splitter = RecursiveCharacterTextSplitter(
-            chunk_size=settings.CHUNK_SIZE,
-            chunk_overlap=settings.CHUNK_OVERLAP,
-        )
-        return splitter.split_documents(docs)
 
     def list_files(self):
 

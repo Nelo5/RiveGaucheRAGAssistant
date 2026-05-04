@@ -6,7 +6,7 @@ from app.core.config import settings
 
 class QdrantService:
     def __init__(self):
-        self.client = QdrantClient(url=settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY)
+        self.client = QdrantClient(url=settings.QDRANT_URL)             #, api_key=settings.QDRANT_API_KEY)
         self.embeddings = FastEmbedEmbeddings()
         self.sparse = FastEmbedSparse(model_name='Qdrant/BM25')
         self.store = None
@@ -30,6 +30,12 @@ class QdrantService:
             retrieval_mode=RetrievalMode.HYBRID,
             vector_name='Dense',
             sparse_vector_name='Sparse'
+        )
+
+        self.client.create_payload_index(
+            collection_name=settings.COLLECTION_NAME,
+            field_name="metadata.file_id",
+            field_type=models.PayloadSchemaType.UUID 
         )
 
     def add_documents(self, docs):

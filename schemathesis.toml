@@ -1,0 +1,23 @@
+# schemathesis.toml
+
+[[project]]
+title = "Payment API"
+base-url = "http://localhost:8000"
+
+
+[[operations]]
+include-path = "/query"
+include-method = "POST"
+generation.max-examples = 10
+
+
+[[operations]]
+include-path = "/chats/{chat_id}/messages"
+include-method = "POST"
+generation.max-examples = 10
+
+# schemathesis.toml
+[auth.dynamic.openapi.BearerAuth]
+path = "/auth/login"
+payload = { username = "ashot@mail.ru", password = "fijnbr228" }
+extract_selector = "/access_token"

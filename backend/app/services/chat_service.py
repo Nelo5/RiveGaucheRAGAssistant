@@ -6,8 +6,6 @@ from app.services.rag_service import rag_service
 
 
 
-
-
 def create_chat(db: Session, user_id):
     chat_count = db.query(Chat).filter(Chat.user_id == user_id).count()
     chat_number = chat_count + 1

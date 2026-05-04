@@ -1,16 +1,15 @@
-import tempfile
-from pathlib import Path
-from app.services.qdrant_service import QdrantService
+from app.services.qdrant_service import qdrant_service
 from langchain_gigachat.chat_models import GigaChat
 from app.core.config import settings
 
 
-SYSTEM = '''Ты умный помощник магазина "Магнит". Твоя задача - отвечать на вопросы клиентов на основе данных из контекста. Если в контексте недостаточно данных для ответа, скажи, что не можешь ответить на данный вопрос'''
+SYSTEM = '''Ты умный помощник магазина "Магнит". Твоя задача - отвечать на вопросы клиентов на основе данных из контекста.
+ Если в контексте недостаточно данных для ответа, скажи, что не можешь ответить на данный вопрос. Отвечай простым текстом, не в формате Markdown.'''
 
 
 class RAGService:
     def __init__(self):
-        self.qdrant = QdrantService()
+        self.qdrant = qdrant_service
         self.llm = GigaChat(credentials=settings.GIGACHAT_CREDENTIALS, verify_ssl_certs=False)
 
     def initialize(self):

@@ -37,14 +37,14 @@ services:
       - app-network
 
   backend:
-    image: nelo05/rksp_kursach-backend:latest
+    build: ./backend
     env_file: .env
     container_name: fastapi_app_backend
     ports:
       - "8000:8000"
-    depends_on:
-      db:
-        condition: service_healthy
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
     networks:
       - app-network
 
@@ -53,8 +53,8 @@ services:
       ports:
         - "3000:80"
       env_file: .env
-      # depends_on:
-      #   - backend
+      depends_on:
+        - backend
       networks:
       - app-network
 
