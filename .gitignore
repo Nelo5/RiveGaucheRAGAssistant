@@ -2,3 +2,5 @@ qdrant_storage
 venv
 .env
 *__pycache__*/
+hooks.py
+schemathesis.toml

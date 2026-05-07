@@ -3,14 +3,29 @@ from langchain_gigachat.chat_models import GigaChat
 from app.core.config import settings
 
 
-SYSTEM = '''Ты умный помощник магазина "Магнит". Твоя задача - отвечать на вопросы клиентов на основе данных из контекста.
- Если в контексте недостаточно данных для ответа, скажи, что не можешь ответить на данный вопрос. Отвечай простым текстом, не в формате Markdown.'''
+SYSTEM = '''Ты умный помощник магазина косметики "РивГош". Твоя задача - отвечать на вопросы клиентов на основе данных из контекста.
+ Если в контексте недостаточно данных для ответа, скажи, что не можешь ответить на данный вопрос и предложи позвонить по 
+ телефону бесплатной горячей линии: 8 (800) 234-44-60 . Отвечай сплошным текстом, где надо - списки.  НЕ ИСПОЛЬЗУЙ Markdown'''
+
+
+class StubGigaChat:
+    """Заглушка для GigaChat с тем же интерфейсом."""
+    def __init__(self, credentials=None, verify_ssl_certs=False):
+        # Параметры принимаются, но не используются
+        pass
+
+    def invoke(self, messages):
+        # Возвращаем объект, имитирующий ответ LLM
+        class StubResponse:
+            content = "Это ответ-заглушка от искусственного интеллекта."
+        return StubResponse()
 
 
 class RAGService:
     def __init__(self):
         self.qdrant = qdrant_service
         self.llm = GigaChat(credentials=settings.GIGACHAT_CREDENTIALS, verify_ssl_certs=False)
+        # self.llm = StubGigaChat(credentials=settings.GIGACHAT_CREDENTIALS, verify_ssl_certs=False)
 
     def initialize(self):
         self.qdrant.initialize()

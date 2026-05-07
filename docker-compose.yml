@@ -4,8 +4,8 @@ services:
     container_name: qdrant
     restart: unless-stopped
     ports:
-      - "6333:6333"   # REST API
-      - "6334:6334"   # gRPC (опционально)
+      - "6333:6333"
+      - "6334:6334"
     volumes:
       - ./qdrant_storage:/qdrant/storage
     env_file: .env
@@ -42,9 +42,9 @@ services:
     container_name: fastapi_app_backend
     ports:
       - "8000:8000"
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - app-network
 

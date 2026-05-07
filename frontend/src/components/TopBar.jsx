@@ -1,7 +1,8 @@
+// components/TopBar.jsx
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-export default function TopBar() {
+export default function TopBar({ isMobileMenuOpen, onToggleMobileMenu }) {
   const { isAuthenticated, user, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -12,8 +13,13 @@ export default function TopBar() {
 
   return (
     <header className="topbar">
-      <Link to="/" className="logo">Магнит-помощник</Link>
-      <div className="topbar-actions">
+      <div className="topbar-left">
+        <button className="hamburger" onClick={onToggleMobileMenu} aria-label="Меню">
+          ☰
+        </button>
+        <Link to="/" className="logo">Рив Гош поддержка</Link>
+      </div>
+      <div className="topbar-actions desktop-only">
         {isAuthenticated ? (
           <>
             <span className="user-info">{user.email} ({user.role})</span>

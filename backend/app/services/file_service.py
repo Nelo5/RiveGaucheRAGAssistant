@@ -97,7 +97,6 @@ class FileService:
         return list(files.values())
 
     def get_file(self, file_id: UUID):
-
         points, _ = qdrant_service.client.scroll(
             collection_name=settings.COLLECTION_NAME,
             with_payload=True,
@@ -106,28 +105,23 @@ class FileService:
                 must=[
                     models.FieldCondition(
                         key="metadata.file_id",
-                        match=models.MatchValue(value=file_id)
+                        match=models.MatchValue(value=str(file_id))   # <-- str()
                     )
                 ]
             )
         )
-
         if not points:
             raise HTTPException(404, "Файл не найден")
-
         first = points[0].payload["metadata"]
-
         return {
             "file_id": file_id,
             "filename": first["filename"],
             "uploaded_at": first["uploaded_at"],
             "chunks": len(points)
         }
-    
+
     def delete_file(self, file_id: UUID):
-
-        self.get_file(file_id)
-
+        self.get_file(file_id)  # теперь работает
         qdrant_service.client.delete(
             collection_name=settings.COLLECTION_NAME,
             points_selector=models.FilterSelector(
@@ -135,17 +129,12 @@ class FileService:
                     must=[
                         models.FieldCondition(
                             key="metadata.file_id",
-                            match=models.MatchValue(value=file_id)
+                            match=models.MatchValue(value=str(file_id))   # <-- str()
                         )
                     ]
                 )
             )
         )
-
-        return {
-            "status": "success",
-            "message": f"Файл {file_id} удалён"
-        }
-
+        return {"status": "success", "message": f"Файл {file_id} удалён"}
 
 file_service = FileService()

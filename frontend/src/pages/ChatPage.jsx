@@ -1,15 +1,18 @@
+// pages/ChatPage.jsx
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../api';
 import Sidebar from '../components/Sidebar';
 import ChatArea from '../components/ChatArea';
+import MobileMenu from '../components/MobileMenu';
 
-export default function ChatPage() {
-  const { chatId } = useParams(); // /chat/:chatId
-  const { isAuthenticated, token } = useAuth();
+export default function ChatPage({ isMobileMenuOpen, onCloseMobileMenu }) {
+  const { chatId } = useParams();
+  const { isAuthenticated, token, user, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
 
+  // Гостевые сообщения
   const [guestMessages, setGuestMessages] = useState([]);
 
   useEffect(() => {
@@ -37,12 +40,11 @@ export default function ChatPage() {
     }
   };
 
-  // Для авторизованного — работа с чатами через API
+  // Авторизованный режим
   const [chats, setChats] = useState([]);
   const [selectedChatId, setSelectedChatId] = useState(chatId || null);
   const [messages, setMessages] = useState([]);
 
-  // Если авторизованы, но chatId не указан, перенаправляем на первый чат или создаём новый
   useEffect(() => {
     if (!isAuthenticated || !token) return;
 
@@ -56,7 +58,6 @@ export default function ChatPage() {
             navigate(`/chat/${data[0].id}`, { replace: true });
           }
         } else {
-          // Создаём первый чат
           const newChat = await api.createChat();
           setChats([newChat]);
           setSelectedChatId(newChat.id);
@@ -69,14 +70,12 @@ export default function ChatPage() {
     loadChats();
   }, [isAuthenticated, token, navigate, selectedChatId]);
 
-  // Синхронизируем selectedChatId с параметром URL
   useEffect(() => {
     if (chatId && isAuthenticated) {
       setSelectedChatId(chatId);
     }
   }, [chatId, isAuthenticated]);
 
-  // Загрузка сообщений выбранного чата
   const loadMessages = useCallback(async () => {
     if (!selectedChatId || !isAuthenticated) return;
     try {
@@ -94,11 +93,9 @@ export default function ChatPage() {
   const sendChatMessage = async (content) => {
     if (!selectedChatId || !content.trim()) return;
     const question = content.trim();
-    // Оптимистично добавляем сообщение пользователя
     setMessages((prev) => [...prev, { id: Date.now().toString(), role: 'user', content: question }]);
     try {
       const response = await api.sendMessage(selectedChatId, question);
-      // Ответ ассистента приходит в response (MessageResponse)
       setMessages((prev) => [...prev, response]);
     } catch (err) {
       setMessages((prev) => [...prev, { id: Date.now().toString(), role: 'system', content: `Ошибка: ${err.message}` }]);
@@ -112,6 +109,7 @@ export default function ChatPage() {
       setSelectedChatId(newChat.id);
       setMessages([]);
       navigate(`/chat/${newChat.id}`);
+      onCloseMobileMenu();
     } catch (err) {
       console.error('Ошибка создания чата:', err);
     }
@@ -120,8 +118,10 @@ export default function ChatPage() {
   const handleSelectChat = (chatId) => {
     setSelectedChatId(chatId);
     navigate(`/chat/${chatId}`);
+    onCloseMobileMenu();
   };
 
+  // Гость
   if (!isAuthenticated) {
     return (
       <div className="chat-layout guest">
@@ -130,23 +130,45 @@ export default function ChatPage() {
           onSend={sendGuestMessage}
           placeholder="Введите ваш вопрос..."
         />
+        {isMobileMenuOpen && (
+          <MobileMenu
+            isAuthenticated={false}
+            onClose={onCloseMobileMenu}
+          />
+        )}
       </div>
     );
   }
 
+  // Авторизованный
   return (
     <div className="chat-layout authenticated">
-      <Sidebar
-        chats={chats}
-        selectedChatId={selectedChatId}
-        onSelectChat={handleSelectChat}
-        onCreateChat={handleCreateChat}
-      />
+      <div className="sidebar-container">
+        <Sidebar
+          chats={chats}
+          selectedChatId={selectedChatId}
+          onSelectChat={handleSelectChat}
+          onCreateChat={handleCreateChat}
+        />
+      </div>
       <ChatArea
         messages={messages}
         onSend={sendChatMessage}
         placeholder="Введите сообщение..."
       />
+      {isMobileMenuOpen && (
+        <MobileMenu
+          isAuthenticated={true}
+          chats={chats}
+          selectedChatId={selectedChatId}
+          onSelectChat={handleSelectChat}
+          onCreateChat={handleCreateChat}
+          onClose={onCloseMobileMenu}
+          user={user}
+          isAdmin={isAdmin}
+          onLogout={logout}
+        />
+      )}
     </div>
   );
 }

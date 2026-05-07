@@ -1,21 +1,12 @@
-# schemathesis.toml
-generation.max-examples = 100
-
-
 [[project]]
 title = "Payment API"
 base-url = "http://localhost:8000"
 
+[reports.junit]
+path = "./test-reports/schemathesis-results.xml"
 
-[[operations]]
-include-path = "/query"
-include-method = "POST"
-generation.max-examples = 10
+[auth.dynamic.openapi.HTTPBearer]
+path = "/auth/login"
+payload = { email = "user@example.com", password = "string" }
+extract_selector = "/access_token"
 
-
-[[operations]]
-include-path = "/chats/{chat_id}/messages"
-include-method = "POST"
-generation.max-examples = 10
-
-# schemathesis.toml
