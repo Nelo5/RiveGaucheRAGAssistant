@@ -26,20 +26,22 @@ class FileService:
         return splitter.split_documents(docs)
 
     async def upload_file(self, file: UploadFile):
-
-        if not file.filename.lower().endswith(".pdf"):
-            raise HTTPException(400, "Поддерживаются только PDF")
+        if file is None:
+            raise HTTPException(400, "No file provided")
 
         contents = await file.read()
         if not contents:
-            raise HTTPException(422, "File is empty")
-        await file.seek(0)   # сбросить позицию для повторного чтения
+            raise HTTPException(400, "File is empty")
+        
+        if not contents.startswith(b"%PDF"):
+            raise HTTPException(400, "Поддерживаются только PDF")
+
 
 
         file_id = str(uuid.uuid4())
 
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
-            tmp.write(await file.read())
+            tmp.write(contents)
             temp_path = Path(tmp.name)
 
         try:

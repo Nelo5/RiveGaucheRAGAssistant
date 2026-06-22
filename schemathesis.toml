@@ -1,12 +1,11 @@
 [[project]]
-title = "Payment API"
+title = "RAG Assistant API"
 base-url = "http://localhost:8000"
 
-[reports.junit]
-path = "./test-reports/schemathesis-results.xml"
+[[operations]] 
+include-name = "POST /files"
+enabled = false
 
-[auth.dynamic.openapi.HTTPBearer]
-path = "/auth/login"
-payload = { email = "user@example.com", password = "string" }
-extract_selector = "/access_token"
-
+[[operations]]
+include-name = "GET /files/{file_id}/"
+parameters = { "path.file_id" = "8642b4cc-ffad-49ab-bbf0-6cc9ac7b65cd"}

@@ -6,16 +6,16 @@ from app.api.routes import chats
 from app.models import chat, message, user
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from app.core.config import settings
 from app.core.db import engine, Base
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title='RAG System', lifespan=lifespan)
+app = FastAPI(title='RAG System', lifespan=lifespan, openapi_version="3.0.3")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins= [origin.strip() for origin in settings.CORS_ALLOWED_ORIGINS.split(",") if origin.strip()],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

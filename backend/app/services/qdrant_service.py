@@ -8,7 +8,7 @@ class QdrantService:
     def __init__(self):
         self.client = QdrantClient(url=settings.QDRANT_URL)             #, api_key=settings.QDRANT_API_KEY)
         self.embeddings = FastEmbedEmbeddings()
-        self.sparse = FastEmbedSparse(model_name='Qdrant/BM25')
+        self.sparse = FastEmbedSparse(model_name=settings.SPARSE_MODEL)
         self.store = None
 
     def initialize(self):
@@ -42,6 +42,6 @@ class QdrantService:
         self.store.add_documents(docs)
 
     def search(self, question: str):
-        return self.store.max_marginal_relevance_search(question)
+        return self.store.similarity_search(question, k=8)
     
 qdrant_service = QdrantService()

@@ -1,6 +1,6 @@
 qdrant_storage
-venv
+env
 .env
 *__pycache__*/
-hooks.py
-schemathesis.toml
+.schemathesis
+

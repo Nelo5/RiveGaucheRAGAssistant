@@ -24,8 +24,8 @@ class StubGigaChat:
 class RAGService:
     def __init__(self):
         self.qdrant = qdrant_service
-        self.llm = GigaChat(credentials=settings.GIGACHAT_CREDENTIALS, verify_ssl_certs=False)
-        # self.llm = StubGigaChat(credentials=settings.GIGACHAT_CREDENTIALS, verify_ssl_certs=False)
+        # self.llm = GigaChat(credentials=settings.GIGACHAT_CREDENTIALS, verify_ssl_certs=False)
+        self.llm = StubGigaChat(credentials=settings.GIGACHAT_CREDENTIALS, verify_ssl_certs=False)
 
     def initialize(self):
         self.qdrant.initialize()
