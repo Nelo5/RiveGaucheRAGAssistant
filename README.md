@@ -7,7 +7,6 @@
 - frontend на React + Vite с маршрутизацией, авторизацией и адаптивным интерфейсом;
 - PostgreSQL для хранения пользователей, чатов и сообщений;
 - Qdrant для поиска по векторным и sparse embedding-индексам на основе загруженных документов;
-- Adminer для удобного управления базой данных.
 
 ## Используемые технологии
 
@@ -22,7 +21,6 @@
 - Vite
 - Nginx
 - Docker / Docker Compose
-- Adminer
 
 ## Запуск через Docker Compose
 
@@ -45,7 +43,6 @@ docker compose up --build
 - Frontend: `http://localhost:3000`
 - Backend API: `http://localhost:8000`
 - Qdrant HTTP: `http://localhost:6333`
-- Админка PostgreSQL (Adminer): `http://localhost:8080`
 
 ### Шаг 4. Остановка
 
